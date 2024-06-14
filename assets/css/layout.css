@@ -540,6 +540,11 @@ header ul {
 
 
 /* search form _____ start */
+.search-toggle-btn {
+  display: flex;
+  align-items: center;
+}
+
 .menu-search-form {
   position: absolute;
   left: 0;

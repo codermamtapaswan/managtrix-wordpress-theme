@@ -40,6 +40,7 @@ if (!defined('MANAGTRIX_HOME_URI')) {
 
 /*  Register theme assests
 ---------------------------*/
+add_action('wp_enqueue_scripts', 'managtrix_register_assets');
 
 function managtrix_register_assets()
 {
@@ -69,7 +70,6 @@ function managtrix_register_assets()
     echo '<link rel="preload" href="' . MANAGTRIX_DIR_URI . '/' . $font . '" as="font" type="' . $type . '" crossorigin="anonymous">' . "\n";
   }
 }
-add_action('wp_enqueue_scripts', 'managtrix_register_assets');
 
 
 
@@ -89,10 +89,67 @@ function managtrix_theme_support()
 {
   add_theme_support('title-tag');
   add_theme_support('custom-logo');
+  // enable HTML5 support for the search form
+  add_theme_support(
+    'html5',
+    array(
+      'search-form',
+      'comment-form',
+      'comment-list',
+      'gallery',
+      'caption',
+      'script',
+      'style',
+    )
+  );
 }
 
 add_action('after_setup_theme', 'managtrix_theme_support');
 
+
+
+/* Hook custom body class for all pages 
+sources : https://developer.wordpress.org/reference/hooks/body_class/
+----------------------------------------*/
+
+function body_custom_class()
+{
+
+  if (is_home()) {
+    $classes[] = 'mg_homepage';
+  }
+  if (is_archive()) {
+    $classes[] = 'mg_category_archive_page';
+  }
+  if (is_author()) {
+    $classes[] = 'mg_author_archive_page';
+  }
+  if (is_page()) {
+    $classes[] = 'mg_page_template';
+  }
+  if (is_search()) {
+    $classes[] = 'mg_search_not_found_page';
+  }
+  if (is_single()) {
+    $classes[] = 'mg_single_archive_page';
+  }
+  if (is_404()) {
+    $classes[] = 'mg_404_error_page';
+  }
+  if (is_page_template('template-pages/thank-you.php')) {
+    $classes[] = 'mg_thankyou_page';
+  }
+  if (is_page_template('template-pages/authors.php')) {
+    $classes[] = 'mg_authors_page';
+  }
+  if (is_page_template('template-pages/contact.php')) {
+    $classes[] = 'mg_contact_page';
+  }
+
+
+  return $classes;
+}
+add_filter('body_class', 'body_custom_class');
 
 /*Add support for additional image file types
 -----------------------------------------------*/

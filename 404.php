@@ -14,5 +14,9 @@ if (!defined('ABSPATH')) {
 }
 
 get_header();
+
+
 get_template_part('template-parts/content', 'error');
+
+
 get_footer();
